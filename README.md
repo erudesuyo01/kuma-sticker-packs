@@ -50,7 +50,7 @@ Open `js/skills.js`. Change the `SKILLS` table (name, desc, type, power, dur, cd
 
 ## Rarity & pack odds (js/config.js)
 - 21 stickers: Common 10 (white border), Rare 6 (light blue), Epic 4 (purple holofoil), Secret 1 (red holofoil).
-- `rarityIds` lists which sticker number is which rarity. `rates` = chance for the last pack slot (90 / 7 / 2.9 / 0.1).
+- `rarityIds` lists which sticker number is which rarity. `rates` = chance for the last pack slot (95 / 3 / 1.9 / 0.1).
 - Each pack: 2 guaranteed Common + 1 slot rolled with `rates` (Common or higher). Best sticker is revealed last.
 - Duplicates raise Level (max 10): +10% stats per level (`dupBonus`).
 - Index and Deck list stickers in separate Common / Rare / Epic / Secret sections.
