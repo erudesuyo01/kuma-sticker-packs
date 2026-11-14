@@ -1,0 +1,82 @@
+/* Real-time battle arena */
+.arena{position:relative;display:flex;justify-content:space-between;align-items:flex-end;gap:8px;min-height:310px;padding:14px;border-radius:22px;background:radial-gradient(circle at 50% 120%,#7C83A6 0,#4957A6 35%,#303E8C 65%,#1a2257);border:2px solid #c6c5d955;overflow:hidden}
+.arena::after{content:"";position:absolute;left:8%;right:8%;bottom:8px;height:26px;border-radius:50%;background:#0004;filter:blur(6px)}
+.arena.shake{animation:shake .4s}
+.arena.victory{animation:vic 1s ease-out}.arena.defeat{filter:grayscale(.8) brightness(.6);transition:filter 1s}
+@keyframes vic{50%{filter:brightness(1.8)}}
+.bside{width:48%;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:1}
+.hud{width:100%;font-size:.82rem;line-height:1.3}
+.hud .nm{font-weight:700}.hud .dots{letter-spacing:2px}
+.fgt{width:min(34vw,150px);aspect-ratio:1;position:relative;margin-bottom:12px}
+.fgt .body{width:100%;height:100%;border-radius:20px;border:5px solid var(--snow);object-fit:cover;background:var(--royal);display:grid;place-items:center;font-size:4rem;animation:idle 1.7s ease-in-out infinite}
+.bside.R .fgt .body{animation-delay:-.8s}
+@keyframes idle{50%{transform:translateY(-7px) scale(1.02)}}
+.fgt.lungeL .body{animation:lungeL .35s}.fgt.lungeR .body{animation:lungeR .35s}
+@keyframes lungeL{40%{transform:translateX(46px) rotate(6deg)}}
+@keyframes lungeR{40%{transform:translateX(-46px) rotate(-6deg)}}
+.fgt.hurt .body{animation:hurt .3s;filter:brightness(2.2) saturate(.4)}
+@keyframes hurt{25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.fgt.cast .body{animation:cast .5s}
+@keyframes cast{50%{transform:scale(1.18);filter:brightness(1.5)}}
+.fgt.down .body{animation:down .7s forwards}
+@keyframes down{to{transform:translateY(24px) rotate(80deg) scale(.7);filter:grayscale(1);opacity:.15}}
+.fgt.enter .body{animation:enter2 .5s}
+@keyframes enter2{from{transform:scale(.3) translateY(-60px);opacity:0}}
+.fgt.shield .body{box-shadow:0 0 0 4px #8da0ff,0 0 26px 6px #8da0ff}
+.fgt.buff .body{box-shadow:0 0 24px 8px var(--gold)}
+.fgt.debuff .body{outline:4px dashed #b07cff}
+.stat{position:absolute;top:-22px;left:0;right:0;text-align:center;font-size:1.3rem;height:24px}
+.stat .st{display:inline-block;animation:spin 1s linear infinite}
+.dn{position:absolute;font-weight:700;font-size:1.6rem;color:#fff;text-shadow:0 2px 0 #1a2257,0 0 8px #000;animation:dn .9s ease-out forwards;pointer-events:none;z-index:5}
+.dn.heal{color:#7dffb0}.dn.blk{color:#8da0ff;font-size:1.1rem}
+@keyframes dn{from{transform:translate(-50%,0) scale(.6)}20%{transform:translate(-50%,-12px) scale(1.3)}to{transform:translate(-50%,-70px) scale(1);opacity:0}}
+.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.sk{position:relative;overflow:hidden;border-radius:16px;border:3px solid var(--lav);background:var(--navy);color:var(--snow);font:inherit;font-size:.78rem;padding:8px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.sk img{width:46px;height:46px;border-radius:12px;object-fit:cover;border:2px solid var(--snow)}
+.sk.act{border-color:var(--gold)}
+.sk.ready{animation:glow 1s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 0 16px 3px #a8bcf0}}
+.sk.dead,.sk:disabled{cursor:default}.sk.dead{filter:grayscale(1);opacity:.4}
+.cdv{position:absolute;left:0;right:0;bottom:0;background:#0b0f2caa;pointer-events:none}
+.cdt{position:absolute;inset:0;display:grid;place-items:center;font-size:1.5rem;font-weight:700;pointer-events:none;text-shadow:0 2px 4px #000}
+.sw{position:relative;overflow:hidden}
+.pre{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.pre .panel{text-align:center;font-size:.85rem}.pre img{width:96px;height:96px;border-radius:16px;border:4px solid var(--snow);object-fit:cover}
+@media(max-width:600px){.arena{min-height:270px;padding:10px 6px}.fgt .body{font-size:2.6rem}}
+
+/* --- v3: top team status, radial cooldowns, attack animation variants --- */
+.tbar{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.tbar .mid{text-align:center;font-weight:600;font-size:.95rem;flex:1}
+.team{display:flex;gap:6px}
+.team .chip{width:54px;position:relative}
+.chip .em{aspect-ratio:1;display:grid;place-items:center;font-size:1.6rem;background:var(--royal)}
+.chip .mh{display:block;height:6px;background:#0006}.chip .mh b{display:block;height:100%;background:#8da0ff}
+.team.en .mh b{background:#ff9bb3}
+.chip.act{border-color:var(--gold);box-shadow:0 0 10px #ffe7a388}
+.chip.dead{filter:grayscale(1);opacity:.35}
+.chip:disabled:not(.dead):not(.act){opacity:.7}
+.cdv{inset:0!important;height:auto!important;background:conic-gradient(#0b0f2ccc var(--p,0deg),transparent 0)!important}
+.sk:disabled:not(.dead){filter:brightness(.7)}
+.sk small{color:var(--lav);font-size:.7rem}
+.fgt.atk[data-anim=lunge][data-dir=L] .body{animation:lungeL .35s}
+.fgt.atk[data-anim=lunge][data-dir=R] .body{animation:lungeR .35s}
+.fgt.atk[data-anim=jump] .body{animation:jump .4s}
+.fgt.atk[data-anim=spin] .body{animation:spin2 .45s}
+@keyframes jump{40%{transform:translateY(-38px) scale(1.1)}70%{transform:translateY(4px) scale(.95,1.05)}}
+@keyframes spin2{to{transform:rotate(360deg) scale(1.08)}}
+.fgt.atk.hurt .body{animation:hurt .3s}
+.wrap>*{flex:none}
+.tbar .mid{min-width:0}.tbar .mid small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.team .chip{width:46px}.chip{flex:none}
+@media(min-width:600px){.team .chip{width:58px}}
+
+/* --- v4: two decks --- */
+.dk{border:3px solid var(--lav);border-radius:12px;background:var(--navy);color:var(--snow);font:inherit;font-size:.72rem;padding:4px 6px;width:76px;text-align:center;cursor:pointer;line-height:1.25}
+.dk:disabled{cursor:default}.dk.act{border-color:var(--gold);box-shadow:0 0 10px #ffe7a388}.dk.dead{filter:grayscale(1);opacity:.35}
+.dk .mh{display:block;height:6px;background:#0006;margin:3px 0}.dk .mh b{display:block;height:100%;background:#8da0ff}.team.en .dk .mh b{background:#ff9bb3}
+.dk small{color:var(--lav);font-size:.65rem}
+.fgt{width:min(40vw,170px)}
+.fgt .body.deck{border:0;background:none;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:4px;font-size:1.8rem}
+.fgt .body.deck img,.fgt .body.deck span{width:46%;aspect-ratio:1;object-fit:cover;border-radius:12px;border:3px solid var(--snow);background:var(--royal);display:grid;place-items:center}
+.sk b{font-size:.75rem}
+@media(max-width:600px){.dk{width:62px;padding:3px}.tbar{flex-wrap:wrap;justify-content:center}.tbar .mid{order:-1;flex-basis:100%}}
