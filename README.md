@@ -50,7 +50,26 @@ Open `js/skills.js`. Change the `SKILLS` table (name, desc, type, power, dur, cd
 
 ## Rarity & pack odds (js/config.js)
 - 21 stickers: Common 10 (white border), Rare 6 (light blue), Epic 4 (purple holofoil), Secret 1 (red holofoil).
-- `rarityIds` lists which sticker number is which rarity. `rates` = chance for the last pack slot (95 / 3 / 1.9 / 0.1).
+- `rarityIds` lists which sticker number is which rarity. `rates` = chance for the last pack slot (90 / 7 / 2.9 / 0.1).
 - Each pack: 2 guaranteed Common + 1 slot rolled with `rates` (Common or higher). Best sticker is revealed last.
 - Duplicates raise Level (max 10): +10% stats per level (`dupBonus`).
 - Index and Deck list stickers in separate Common / Rare / Epic / Secret sections.
+
+## Dungeon balance (30 stages)
+Tested with thousands of simulated battles (a bot that plays like a careful human: presses ready skills, switches decks when low). "Typical level" = the sticker level a player usually reaches by that stage if they spend all coins on packs. Win rate = chance a typical player clears the stage.
+
+| Stages | Typical level | Win rate at typical level |
+|---|---|---|
+| 1-9 (easy start) | L2-L5 | 98-100% |
+| 10 (boss) | L5-L5 | 78-78% |
+| 11-19 | L6-L15 | 73-99% |
+| 20 (boss) | L16-L16 | 49-49% |
+| 21-29 | L18-L20 | 56-97% |
+| 30 (final boss) | L20-L20 | 29-29% |
+
+Being 3 levels below the typical level makes most stages hard (often under 50%), so levelling up (duplicates) matters. Players with Epic/Secret stickers do better than this table.
+
+Tune it in `js/config.js` > `dungeon` (hpPerStage, atkPerStage, defPerStage, bossMul, lateFrom, lateRate, cdPerStage, reactBase...). Levels: `maxLevel` (20), `dupBonus` (+10%/level to 10), `dupBonusLate` (+5%/level after 10), `deckHpPerLevel` (+5% deck HP per average level).
+
+## Rarity reveal animations
+Common ~1.5s | Rare ~2.2s (blue light burst, 2 rings, flash) | Epic ~3.2s (purple dim, 3 pulses, 2 flashes, shakes) | Secret ~5.2s (dark red screen, 3 heartbeats, 3 lightning flashes, giant burst, SECRET! banner). Each has its own sound (js/sfx.js).

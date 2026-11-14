@@ -67,3 +67,29 @@ img.b-common,img.b-rare,img.b-epic,img.b-secret{border:4px solid}
 .rh{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0 2px;font-size:1rem}
 .rh span{font-size:.9rem}.rh small{margin-left:auto}
 .tile.b-common,.tile.b-rare,.tile.b-epic,.tile.b-secret{border-width:3px}
+
+/* ---- rarity reveal effects (Rare / Epic / Secret) ---- */
+.reveal.r-rare{--ray:#9fd4ffcc;--ray2:#ffffffaa}
+.reveal.r-epic{--ray:#d49bffcc;--ray2:#8be9ffaa}
+.reveal.r-secret{--ray:#ff4d4dcc;--ray2:#ffb3b3aa}
+.reveal.on.new.r-rare .ring{animation-delay:1.4s}.reveal.on.new.r-rare .ring.b{animation-delay:1.65s}
+.reveal.on.new.r-epic .ring{animation-delay:2s}.reveal.on.new.r-epic .ring.b{animation-delay:2.3s}
+.reveal.on.new.r-secret .ring{animation-delay:3.8s}.reveal.on.new.r-secret .ring.b{animation-delay:4.2s}
+.reveal.on.new.r-secret .card::before{animation:veilS var(--dur) ease-in forwards;box-shadow:0 0 60px 22px #ff4d4dcc}
+.reveal.on.new.r-epic .card::before{box-shadow:0 0 56px 20px #d49bffcc}
+.reveal.on.new.r-rare .card::before{box-shadow:0 0 50px 18px #9fd4ffcc}
+@keyframes veilS{0%{opacity:.25}10%,30%,50%,70%{opacity:1}20%,40%,60%{opacity:.55}85%{opacity:1}100%{opacity:0}}
+.flash.rare{background:radial-gradient(circle at 50% 42%,#fff 0%,#9fd4ffcc 35%,transparent 75%)}
+.flash.epic{background:radial-gradient(circle at 50% 42%,#fff 0%,#d49bffcc 35%,transparent 75%)}
+.flash.secret{background:radial-gradient(circle at 50% 42%,#fff 0%,#ff4d4dcc 35%,transparent 78%)}
+.flash.secret.go{animation:flash 1s ease-out}
+.dim{position:fixed;inset:0;z-index:24;pointer-events:none;opacity:0;transition:opacity .8s}
+.dim.epic{background:radial-gradient(circle at 50% 45%,#7a3cff44,#1a0f4de0 80%)}
+.dim.secret{background:radial-gradient(circle at 50% 45%,#ff1f1f33,#2a0505ee 78%)}
+.dim.beat{animation:dimbeat .5s}
+@keyframes dimbeat{30%{filter:brightness(2.2)}}
+.stage.thump{animation:thump .3s}
+@keyframes thump{40%{transform:scale(1.06)}}
+.banner{position:fixed;left:0;right:0;top:9%;text-align:center;font-weight:700;font-size:2.6rem;letter-spacing:.12em;z-index:31;pointer-events:none;text-shadow:0 3px 0 #1a2257,0 0 24px currentColor;animation:bannerIn 2.4s ease-out forwards}
+.banner.rare{color:#9fd4ff}.banner.epic{color:#d9a8ff}.banner.secret{color:#ff6b6b;font-size:3.1rem}
+@keyframes bannerIn{0%{transform:scale(.4);opacity:0}15%{transform:scale(1.25);opacity:1}30%{transform:scale(1)}80%{opacity:1}100%{opacity:0;transform:translateY(-20px)}}

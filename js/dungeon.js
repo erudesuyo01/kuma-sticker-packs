@@ -3,14 +3,16 @@ const Dungeon=(()=>{
   const D=CONFIG.dungeon,total=D.stageCount;
   /* Enemy for stage i (0-based): TWO decks of 3 enemies, same rules as the player's decks.
      Later stages: more HP/ATK, faster attacks, quicker and smarter AI. */
+  const DMG=['slam','flame','bolt'],UTIL=['bark','hex','rally','aegis','heal'];
+  const grow=(per,i)=>per*(Math.min(i,D.lateFrom)+Math.max(0,i-D.lateFrom)*D.lateRate);   // growth slows down after stage lateFrom
   function stageData(i){
     const decks=[0,1].map(k=>{
-      const hp=Math.round(D.baseHp+D.hpPerStage*i+k*10),atk=Math.round(D.baseAtk+D.atkPerStage*i),ms=Math.max(900,1800-i*70)+k*120;
-      const members=[0,1,2].map(m=>{const sk=SKILLS[SKILL_KEYS[(i+k*3+m*2)%SKILL_KEYS.length]],j=i+k*3+m;
-        return{name:D.names[j%D.names.length],icon:D.icons[j%D.icons.length],el:ELEM_KEYS[(i+k*2+m)%6],atk,sk,cdMax:sk.cd*1000*Math.max(.6,1-i*.04)}});
-      return{name:'Deck '+'AB'[k],idx:k,hp,max:hp,atk,def:Math.round(D.baseDef+D.defPerStage*i),ms,anim:['lunge','jump','spin'][(i+k)%3],el:members[0].el,lvl:i+1,stickers:members};
+      const boss=(i+1)%D.bossEvery===0?D.bossMul:1,hp=Math.round((D.baseHp+grow(D.hpPerStage,i)+k*10)*boss),atk=Math.round((D.baseAtk+grow(D.atkPerStage,i))*(boss>1?1+(boss-1)/2:1)),ms=Math.max(900,1800-i*70)+k*120;
+      const members=[0,1,2].map(m=>{const sk=SKILLS[m===1?UTIL[(i+k*2)%UTIL.length]:DMG[(i+k+m)%DMG.length]],j=i+k*3+m;   // every enemy deck: 2 damage skills + 1 utility skill
+        return{name:D.names[j%D.names.length],icon:D.icons[j%D.icons.length],el:ELEM_KEYS[(i+k*2+m)%6],atk,sk,cdMax:sk.cd*1000*Math.max(D.cdMin,1-i*D.cdPerStage)}});
+      return{name:'Deck '+'AB'[k],idx:k,hp,max:hp,atk,def:Math.round(D.baseDef+grow(D.defPerStage,i)),ms,anim:['lunge','jump','spin'][(i+k)%3],el:members[0].el,lvl:i+1,stickers:members};
     });
-    return{n:i+1,name:decks[0].stickers[0].name+' & co.',icon:decks[0].stickers[0].icon,decks,ai:{react:Math.max(300,1500-i*100),smart:i>=3},reward:Math.round(D.baseReward+D.rewardPerStage*i),stars:Math.min(5,Math.ceil((i+1)/2))};
+    return{n:i+1,name:decks[0].stickers[0].name+' & co.',icon:decks[0].stickers[0].icon,decks,ai:{react:Math.max(D.reactMin,D.reactBase-i*D.reactPerStage),smart:i>=D.smartFrom},reward:Math.round(D.baseReward+D.rewardPerStage*i),stars:Math.min(5,Math.ceil((i+1)/2))};
   }
   function render(){
     const cur=Math.min(state.cleared,total-1);

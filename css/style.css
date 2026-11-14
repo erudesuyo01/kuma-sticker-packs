@@ -31,21 +31,21 @@ main{height:100%;display:flex;flex-direction:column;align-items:center;justify-c
 .pack.torn .top{transform:translate(-35%,-95%) rotate(-30deg);opacity:0}
 .pack.torn .bot{transform:translate(35%,85%) rotate(26deg);opacity:0}
 .reveal{position:absolute;inset:-25%;display:grid;place-items:center;pointer-events:none;perspective:1000px}
-.rays{position:absolute;inset:-10%;border-radius:50%;opacity:0;background:repeating-conic-gradient(from 0deg,#f2f2f2cc 0 6deg,transparent 6deg 18deg);-webkit-mask:radial-gradient(circle,#000 8%,transparent 66%);mask:radial-gradient(circle,#000 8%,transparent 66%);will-change:transform}
+.rays{position:absolute;inset:-10%;border-radius:50%;opacity:0;background:repeating-conic-gradient(from 0deg,var(--ray,#f2f2f2cc) 0 6deg,transparent 6deg 18deg);-webkit-mask:radial-gradient(circle,#000 8%,transparent 66%);mask:radial-gradient(circle,#000 8%,transparent 66%);will-change:transform}
 .reveal.on.new .rays{animation:rays-in 1.2s ease-out forwards,spin 14s linear infinite}
 @keyframes rays-in{from{opacity:0;scale:.3}to{opacity:.75;scale:1}}
 @keyframes spin{to{rotate:360deg}}
 .card{position:relative;opacity:0;width:min(66vw,300px,44vh);aspect-ratio:1;line-height:0;border-radius:22px}
 .card img{display:block;width:100%;height:100%;border:7px solid var(--snow);border-radius:22px;background:var(--snow);box-shadow:0 0 0 3px var(--lav),0 0 40px #a8bcf0cc,0 18px 40px #0008}
 .card::after{content:"";position:absolute;inset:0;border-radius:22px;background:linear-gradient(115deg,transparent 28%,#ffc8f055 40%,#b8f0ff66 48%,#fff6b866 56%,#d0c8ff55 62%,transparent 72%);background-size:250% 100%;background-position:150% 0;pointer-events:none}
-.reveal.on.new .card{animation:rise 1.5s cubic-bezier(.2,.9,.25,1.05) forwards}
+.reveal.on.new .card{animation:rise var(--dur,1.5s) cubic-bezier(.2,.9,.25,1.05) forwards}
 .reveal.on.new.settled .card{opacity:1;transform:rotate(-2.5deg);animation:bob 3.4s ease-in-out infinite}
 .reveal.on.new.settled .card::after{animation:shine 3.6s 0.3s ease-in-out infinite}
-@keyframes rise{0%{opacity:0;transform:scale(.3) rotate(-2.5deg)}35%{opacity:1;transform:scale(1.08) rotate(-2.5deg)}65%{transform:scale(1.12) rotate(-2.5deg)}100%{opacity:1;transform:scale(1) rotate(-2.5deg)}}@keyframes veil{0%,55%{opacity:1}100%{opacity:0}}.card::before{content:"";position:absolute;inset:0;border-radius:22px;background:#fff;box-shadow:0 0 50px 18px #a8bcf0cc;opacity:0;z-index:1;pointer-events:none}.reveal.on.new .card::before{animation:veil 1.5s ease-in forwards}
+@keyframes rise{0%{opacity:0;transform:scale(.3) rotate(-2.5deg)}35%{opacity:1;transform:scale(1.08) rotate(-2.5deg)}65%{transform:scale(1.12) rotate(-2.5deg)}100%{opacity:1;transform:scale(1) rotate(-2.5deg)}}@keyframes veil{0%,55%{opacity:1}100%{opacity:0}}.card::before{content:"";position:absolute;inset:0;border-radius:22px;background:#fff;box-shadow:0 0 50px 18px #a8bcf0cc;opacity:0;z-index:1;pointer-events:none}.reveal.on.new .card::before{animation:veil var(--dur,1.5s) ease-in forwards}
 @keyframes bob{50%{transform:translateY(-8px) rotate(1.5deg)}}
 @keyframes shine{0%{background-position:150% 0}60%,100%{background-position:-50% 0}}
 
-.r2{inset:12%;background:repeating-conic-gradient(from 9deg,#ffe7a3dd 0 4deg,transparent 4deg 12deg)}
+.r2{inset:12%;background:repeating-conic-gradient(from 9deg,var(--ray2,#ffe7a3dd) 0 4deg,transparent 4deg 12deg)}
 .reveal.on.new .r2{animation:rays-in 1.2s .3s ease-out forwards,spin 9s linear infinite reverse}
 .ring{position:absolute;top:50%;left:50%;width:45%;aspect-ratio:1;border-radius:50%;border:5px solid #fff;box-shadow:0 0 30px #a8bcf0,inset 0 0 30px #a8bcf0;opacity:0}
 .reveal.on.new .ring{animation:ringout 1s 1s ease-out forwards}

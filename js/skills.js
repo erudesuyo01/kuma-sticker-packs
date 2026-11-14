@@ -27,9 +27,9 @@ function baseDef(id){
   const n=+id.slice(1),b=CONFIG.defaultStats(n);
   return{hp:b.hp,atk:b.atk,def:1+(n*3)%5,ms:1300+((n*2)%4)*150,anim:['lunge','jump','spin'][n%3],el:ELEM_KEYS[(n*5)%6],skill:SKILL_KEYS[(n*3)%8],rarity:rarityOf(id)};
 }
-/* Full stats for a sticker. Duplicates raise its Level (+dupBonus per level, max 10). */
-function statsOf(id){
-  const d=Object.assign(baseDef(id),CONFIG.sticker[id]||{}),lvl=Math.min(10,Math.max(1,state.col[id]||1)),m=(1+CONFIG.dupBonus*(lvl-1))*RARITY[d.rarity].m;
+/* Full stats for a sticker. Duplicates raise its Level (see CONFIG.maxLevel / dupBonus). */
+function statsOf(id,copies){
+  const d=Object.assign(baseDef(id),CONFIG.sticker[id]||{}),lvl=Math.min(CONFIG.maxLevel,Math.max(1,copies!==undefined?copies:(state.col[id]||1))),m=(1+CONFIG.dupBonus*(Math.min(lvl,10)-1)+CONFIG.dupBonusLate*Math.max(0,lvl-10))*RARITY[d.rarity].m;
   return{...d,lvl,ms:d.ms,hp:Math.round(d.hp*m),atk:Math.round(d.atk*m),def:Math.round(d.def*m),sk:SKILLS[d.skill]};
 }
 /* Display helpers used by shop, index and deck screens */
